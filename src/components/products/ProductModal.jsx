@@ -1,19 +1,22 @@
 import { Dialog, Transition } from '@headlessui/react';
 import { Fragment } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import SelectInput from '../forms/SelectInput';
 import TextInput from '../forms/TextInput';
 import NumberInput from '../forms/NumberInput';
 import ImageInput from '../forms/ImageInput';
 import TextArea from '../forms/TextArea';
 import SubmitButton from '../forms/SubmitButton';
+import { useTranslation } from 'react-i18next';
 
-function ProductModal({ isOpen, onClose, formData, setFormData, onSubmit, isLoading }) {
+function ProductModal({ isOpen, onClose, formData, setFormData, onSubmit, isLoading, isEditing }) {
+  const { t } = useTranslation();
+  
   const categoryOptions = [
-    { value: 'electronics', label: 'Electronics' },
-    { value: 'clothing', label: 'Clothing' },
-    { value: 'books', label: 'Books' },
-    { value: 'home', label: 'Home & Garden' }
+    { value: 'electronics', label: t('products.categories.electronics') },
+    { value: 'clothing', label: t('products.categories.clothing') },
+    { value: 'books', label: t('products.categories.books') },
+    { value: 'home', label: t('products.categories.home') }
   ];
 
   return (
@@ -44,40 +47,40 @@ function ProductModal({ isOpen, onClose, formData, setFormData, onSubmit, isLoad
             >
               <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-6 shadow-xl transition-all">
                 <Dialog.Title className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-                  Add New Product
+                  {isEditing ? t('products.editProduct') : t('products.addProduct')}
                 </Dialog.Title>
 
                 <div className="space-y-4">
                   <SelectInput
-                    label="Category"
+                    label={t('products.category')}
                     options={categoryOptions}
                     value={formData.category}
                     onChange={(e) => setFormData({ ...formData, category: e.target.value })}
                   />
                   
                   <TextInput
-                    label="Product Name"
+                    label={t('products.name')}
                     value={formData.name}
                     onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="Enter product name"
+                    placeholder={t('products.enterName')}
                   />
                   
                   <NumberInput
-                    label="Price"
+                    label={t('products.price')}
                     value={formData.price}
                     onChange={(value) => setFormData({ ...formData, price: value })}
                   />
                   
                   <ImageInput
-                    label="Product Image"
+                    label={t('products.image')}
                     onChange={(file) => setFormData({ ...formData, image: file })}
                   />
                   
                   <TextArea
-                    label="Description"
+                    label={t('products.description')}
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                    placeholder="Enter product description"
+                    placeholder={t('products.enterDescription')}
                     rows={6}
                   />
                   
@@ -86,11 +89,11 @@ function ProductModal({ isOpen, onClose, formData, setFormData, onSubmit, isLoad
                       onClick={onClose}
                       className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors duration-200"
                     >
-                      Cancel
+                      {t('common.cancel')}
                     </button>
                     <div className="flex-1">
                       <SubmitButton
-                        label="Add Product"
+                        label={isEditing ? t('common.save') : t('products.addProduct')}
                         onClick={onSubmit}
                         isLoading={isLoading}
                       />

@@ -1,14 +1,24 @@
 import { motion } from 'framer-motion';
 import { HiCalendar } from 'react-icons/hi';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '../../context/LanguageContext';
 
 function DateCard() {
+  const { t } = useTranslation();
+  const { language } = useLanguage();
   const today = new Date();
-  const formattedDate = today.toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
+  
+  // Format date based on current language
+  const formattedDate = today.toLocaleDateString(
+    language === 'en' ? 'en-US' : 
+    language === 'ru' ? 'ru-RU' : 'kk-KZ', 
+    {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    }
+  );
 
   return (
     <motion.div
@@ -21,7 +31,7 @@ function DateCard() {
           <HiCalendar className="w-6 h-6 text-white" />
         </div>
         <div className="ml-5">
-          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Today's Date</p>
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('stats.todaysDate')}</p>
           <p className="mt-1 text-xl font-semibold text-gray-900 dark:text-white">
             {formattedDate}
           </p>

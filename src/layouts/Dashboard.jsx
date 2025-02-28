@@ -4,22 +4,26 @@ import { motion } from 'framer-motion';
 import { HiHome, HiShoppingBag, HiUsers, HiMenu, HiX, HiMoon, HiSun, HiLogout } from 'react-icons/hi';
 import { Menu, Transition } from '@headlessui/react';
 import { useTheme } from '../context/ThemeContext';
+import { useTranslation } from 'react-i18next';
+import LanguageSelector from '../components/language/LanguageSelector';
+import { removeToken } from '../utils/auth';
 
 function Dashboard({ setIsAuthenticated }) {
   const [isSidebarOpen, setSidebarOpen] = useState(true);
   const { darkMode, toggleDarkMode } = useTheme();
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleLogout = () => {
-    localStorage.removeItem('adminToken');
+    removeToken();
     setIsAuthenticated(false);
     navigate('/login');
   };
 
   const navItems = [
-    { path: '/', icon: HiHome, label: 'Home' },
-    { path: '/products', icon: HiShoppingBag, label: 'Products' },
-    { path: '/admins', icon: HiUsers, label: 'Admins' },
+    { path: '/', icon: HiHome, label: t('dashboard.home') },
+    { path: '/products', icon: HiShoppingBag, label: t('dashboard.products') },
+    { path: '/admins', icon: HiUsers, label: t('dashboard.admins') },
   ];
 
   return (
@@ -36,7 +40,7 @@ function Dashboard({ setIsAuthenticated }) {
           className={`bg-white dark:bg-gray-800 shadow-lg overflow-hidden flex-shrink-0`}
         >
           <div className="p-4">
-            <h1 className="text-2xl font-bold text-primary-600 dark:text-primary-400">Bayir Dashboard</h1>
+            <h1 className="text-2xl font-bold text-primary-600 dark:text-primary-400">{t('dashboard.title')}</h1>
           </div>
           <nav className="mt-8">
             {navItems.map((item) => (
@@ -74,6 +78,8 @@ function Dashboard({ setIsAuthenticated }) {
                 {isSidebarOpen ? <HiX className="w-6 h-6" /> : <HiMenu className="w-6 h-6" />}
               </button>
               <div className="flex items-center space-x-4">
+                <LanguageSelector />
+                
                 <button
                   onClick={toggleDarkMode}
                   className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-600 dark:text-gray-200"
@@ -112,7 +118,7 @@ function Dashboard({ setIsAuthenticated }) {
                               } group flex items-center w-full px-4 py-2 text-sm text-red-600 dark:text-red-400`}
                             >
                               <HiLogout className="w-5 h-5 mr-3" />
-                              Logout
+                              {t('dashboard.logout')}
                             </button>
                           )}
                         </Menu.Item>

@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 function ImageInput({ label, onChange }) {
   const [preview, setPreview] = useState(null);
+  const { t } = useTranslation();
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -37,7 +39,7 @@ function ImageInput({ label, onChange }) {
           htmlFor="image-input"
           className="w-full px-4 py-2 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg text-center cursor-pointer hover:border-primary-500 dark:hover:border-primary-400 transition-colors duration-200"
         >
-          Click to upload image
+          {t('forms.uploadImage')}
         </label>
         {preview && (
           <motion.div

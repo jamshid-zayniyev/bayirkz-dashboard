@@ -3,8 +3,10 @@ import { motion } from 'framer-motion';
 import { HiPlus } from 'react-icons/hi';
 import ProductModal from '../components/products/ProductModal';
 import ProductTable from '../components/products/ProductTable';
+import { useTranslation } from 'react-i18next';
 
 function Products() {
+  const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
@@ -34,7 +36,7 @@ function Products() {
   };
 
   const handleDelete = async (product) => {
-    if (window.confirm('Are you sure you want to delete this product?')) {
+    if (window.confirm(t('products.confirmDelete'))) {
       setProducts(products.filter(p => p !== product));
     }
   };
@@ -86,7 +88,7 @@ function Products() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-          Products
+          {t('products.title')}
         </h1>
         <motion.button
           whileHover={{ scale: 1.02 }}
@@ -105,7 +107,7 @@ function Products() {
           className="flex items-center px-4 py-2 bg-primary-600 text-white rounded-md shadow-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors duration-200"
         >
           <HiPlus className="w-5 h-5 mr-2" />
-          Add Product
+          {t('products.addProduct')}
         </motion.button>
       </div>
 
@@ -138,6 +140,7 @@ function Products() {
         setFormData={setFormData}
         onSubmit={handleSubmit}
         isLoading={isLoading}
+        isEditing={!!editingProduct}
       />
     </div>
   );

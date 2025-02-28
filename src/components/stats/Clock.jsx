@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { HiClock } from 'react-icons/hi';
+import { useTranslation } from 'react-i18next';
 
 function Clock() {
   const [time, setTime] = useState(new Date());
+  const { t } = useTranslation();
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -24,7 +26,7 @@ function Clock() {
           <HiClock className="w-6 h-6 text-white" />
         </div>
         <div className="ml-5">
-          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Current Time</p>
+          <p className="text-sm font-medium text-gray-500 dark:text-gray-400">{t('stats.currentTime')}</p>
           <p className="mt-1 text-xl font-semibold text-gray-900 dark:text-white">
             {time.toLocaleTimeString()}
           </p>

@@ -3,8 +3,11 @@ import StatCard from './StatCard';
 import Clock from './Clock';
 import DateCard from './DateCard';
 import { HiShoppingBag, HiUsers } from 'react-icons/hi';
+import { useTranslation } from 'react-i18next';
 
 function StatsContainer() {
+  const { t } = useTranslation();
+  
   const container = {
     hidden: { opacity: 0 },
     show: {
@@ -20,16 +23,16 @@ function StatsContainer() {
       variants={container}
       initial="hidden"
       animate="show"
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
     >
       <StatCard
-        title="Total Products"
+        title={t('stats.totalProducts')}
         value="124"
         icon={HiShoppingBag}
         color="bg-blue-500"
       />
       <StatCard
-        title="Total Admins"
+        title={t('stats.totalAdmins')}
         value="8"
         icon={HiUsers}
         color="bg-green-500"

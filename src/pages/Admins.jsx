@@ -3,8 +3,10 @@ import { motion } from 'framer-motion';
 import { HiPlus } from 'react-icons/hi';
 import AdminModal from '../components/admins/AdminModal';
 import AdminTable from '../components/admins/AdminTable';
+import { useTranslation } from 'react-i18next';
 
 function Admins() {
+  const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [editingAdmin, setEditingAdmin] = useState(null);
@@ -29,7 +31,7 @@ function Admins() {
   };
 
   const handleDelete = async (admin) => {
-    if (window.confirm('Are you sure you want to delete this admin?')) {
+    if (window.confirm(t('admins.confirmDelete'))) {
       setAdmins(admins.filter(a => a !== admin));
     }
   };
@@ -79,7 +81,7 @@ function Admins() {
     <div className="space-y-6">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-          Admins
+          {t('admins.title')}
         </h1>
         <motion.button
           whileHover={{ scale: 1.02 }}
@@ -96,7 +98,7 @@ function Admins() {
           className="flex items-center px-4 py-2 bg-primary-600 text-white rounded-md shadow-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-colors duration-200"
         >
           <HiPlus className="w-5 h-5 mr-2" />
-          Add Admin
+          {t('admins.addAdmin')}
         </motion.button>
       </div>
 
