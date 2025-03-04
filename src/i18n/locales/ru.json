@@ -5,18 +5,19 @@
     "edit": "Редактировать",
     "delete": "Удалить",
     "loading": "Обработка...",
-    "confirmDelete": "Вы уверены, что хотите удалить это?"
+    "confirmDelete": "Вы уверены, что хотите удалить это?",
+    "close": "Закрыть"
   },
   "auth": {
     "login": "Войти",
-    "loginTitle": "Панель администратора Байыр",
+    "loginTitle": "Панель администратора",
     "loginSubtitle": "Войдите в свою учетную запись",
     "email": "Электронная почта",
     "password": "Пароль"
   },
   "dashboard": {
-    "title": "Панель администратора Байыр",
-    "welcome": "Добро пожаловать в панель администратора Байыр",
+    "title": "Панель администратора",
+    "welcome": "Добро пожаловать в панель администратора",
     "welcomeSubtitle": "Это ваш центральный узел для управления приложением. Используйте меню навигации для доступа к различным разделам.",
     "home": "Главная",
     "products": "Товары",
@@ -42,11 +43,52 @@
     "enterName": "Введите название товара",
     "enterDescription": "Введите описание товара",
     "confirmDelete": "Вы уверены, что хотите удалить этот товар?",
+    "material": "Материал",
+    "code": "Код товара",
+    "title": "Заголовок",
+    "size": "Размер (см)",
+    "discountPercent": "Скидка (%)",
+    "discountPrice": "Цена со скидкой",
+    "mainImage": "Основное изображение",
+    "additionalImages": "Дополнительные изображения",
+    "enterCode": "Введите код товара",
+    "unifiedFields" : "Унифицированные поля продукта.",
     "categories": {
-      "electronics": "Электроника",
-      "clothing": "Одежда",
-      "books": "Книги",
-      "home": "Дом и сад"
+      "modern": "Современная",
+      "classical": "Классическая",
+      "no-type": "Нет типа"
+    },
+    "materials": {
+      "mdf": "МДФ",
+      "ldsp": "ЛДСП",
+      "solid": "Солид",
+      "noType": "Нет типа"
+    },
+    "names": {
+      "executive_desks": "Столы для руководителей",
+      "executive_desks_open_varnish": "Столы для руководителей | Open Varnish",
+      "staff_desks": "Столы для сотрудников",
+      "meeting_tables": "Столы для переговоров",
+      "open_space_tables": "Столы Open Space",
+      "coffee_tables": "Журнальные столики",
+      "coffee_tables_open_varnish": "Журнальные столики | Open Varnish",
+      "reception_desks": "Столы Reception",
+      "modular_furniture": "Модульная Мебель",
+      "modular_furniture_open_varnish": "Модульная Мебель | Open Varnish",
+      "modular_furniture_open_space": "Модульная Мебель | Столы Open Space",
+      "soft_furniture": "Мягкая Мебель",
+      "wardrobes": "Шкафы",
+      "wardrobes_open_varnish": "Шкафы | Open Varnish",
+      "dressers": "Комоды",
+      "dressers_open_varnish": "Комоды | Open Varnish",
+      "armchairs": "Кресла",
+      "attachment": "Приставка",
+      "set": "Комплект"
+    },
+    "titles": {
+      "modern": "Современная",
+      "classical": "Классическая",
+      "no-type": "Нет типа"
     }
   },
   "admins": {

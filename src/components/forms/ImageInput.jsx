@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 
-function ImageInput({ label, onChange }) {
-  const [preview, setPreview] = useState(null);
+function ImageInput({ label, onChange, value }) {
+  const [preview, setPreview] = useState(value || null);
   const { t } = useTranslation();
 
   const handleImageChange = (e) => {

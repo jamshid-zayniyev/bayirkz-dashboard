@@ -19,7 +19,10 @@
     "i18next": "^23.10.0",
     "react-i18next": "^14.0.5",
     "i18next-browser-languagedetector": "^7.2.0",
-    "jwt-decode": "^4.0.0"
+    "jwt-decode": "^4.0.0",
+    "@reduxjs/toolkit": "^2.2.1",
+    "react-redux": "^9.1.0",
+    "axios": "^1.6.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.1",

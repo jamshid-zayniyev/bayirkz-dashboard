@@ -3,86 +3,117 @@ import { motion } from 'framer-motion';
 import { HiPlus } from 'react-icons/hi';
 import ProductModal from '../components/products/ProductModal';
 import ProductTable from '../components/products/ProductTable';
+import ProductDetail from '../components/products/ProductDetail';
 import { useTranslation } from 'react-i18next';
+import { 
+  useGetProductsQuery, 
+  useAddProductMutation, 
+  useUpdateProductMutation, 
+  useDeleteProductMutation 
+} from '../api/productsApi';
 
 function Products() {
   const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+  const [viewingProduct, setViewingProduct] = useState(null);
   const [formData, setFormData] = useState({
-    category: '',
-    name: '',
-    price: 0,
-    image: null,
-    description: ''
+    name: { ru: '', kz: '' },
+    price: { ru: 0, kz: 0 },
+    description: { ru: '', kz: '' },
+    material: { ru: '', kz: '' },
+    code: { ru: '', kz: '' },
+    title: { ru: '', kz: '' },
+    size: { X: 0, Y: 0, Z: 0 },
+    discountPercent: { ru: 0, kz: 0 },
+    discountPrice: { ru: 0, kz: 0 },
+    mainImage: null,
+    additionalImages: []
   });
 
-  // Sample data - replace with actual data from your backend
-  const [products, setProducts] = useState([
-    {
-      name: 'Sample Product',
-      category: 'Electronics',
-      price: 299.99,
-      image: 'https://via.placeholder.com/150',
-      description: 'This is a sample product description.'
-    }
-  ]);
+  // RTK Query hooks
+  const { data: products = [], isLoading: isLoadingProducts, error: productsError } = useGetProductsQuery();
+  const [addProduct, { isLoading: isAddingProduct }] = useAddProductMutation();
+  const [updateProduct, { isLoading: isUpdatingProduct }] = useUpdateProductMutation();
+  const [deleteProduct, { isLoading: isDeletingProduct }] = useDeleteProductMutation();
 
+  const isLoading = isAddingProduct || isUpdatingProduct;
+
+  
   const handleEdit = (product) => {
     setEditingProduct(product);
     setFormData(product);
     setIsModalOpen(true);
   };
 
+  const handleView = (product) => {
+    setViewingProduct(product);
+    setIsDetailOpen(true);
+  };
+
   const handleDelete = async (product) => {
+    
     if (window.confirm(t('products.confirmDelete'))) {
-      setProducts(products.filter(p => p !== product));
+      try {
+        await deleteProduct(product._id).unwrap();
+      } catch (error) {
+        console.error('Failed to delete product:', error);
+      }
     }
   };
 
   const handleSubmit = async () => {
-    setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      const imageUrl = formData.image instanceof File 
-        ? URL.createObjectURL(formData.image) 
-        : formData.image || 'https://via.placeholder.com/150';
-      
       if (editingProduct) {
         // Update existing product
-        setProducts(products.map(p => 
-          p === editingProduct ? { ...formData, image: imageUrl } : p
-        ));
+        
+        await updateProduct({ 
+          id: editingProduct.id, 
+          ...formData 
+        }).unwrap();
       } else {
         // Add new product
-        setProducts([
-          ...products,
-          {
-            ...formData,
-            image: imageUrl
-          }
-        ]);
+        await addProduct(formData).unwrap();
       }
 
       // Close modal and reset form
       setIsModalOpen(false);
       setEditingProduct(null);
       setFormData({
-        category: '',
-        name: '',
-        price: 0,
-        image: null,
-        description: ''
+        name: { ru: '', kz: '' },
+        price: { ru: 0, kz: 0 },
+        description: { ru: '', kz: '' },
+        material: { ru: '', kz: '' },
+        code: { ru: '', kz: '' },
+        title: { ru: '', kz: '' },
+        size: { X: 0, Y: 0, Z: 0 },
+        discountPercent: { ru: 0, kz: 0 },
+        discountPrice: { ru: 0, kz: 0 },
+        mainImage: null,
+        additionalImages: []
       });
     } catch (error) {
       console.error('Error saving product:', error);
-    } finally {
-      setIsLoading(false);
     }
   };
+
+  if (isLoadingProducts) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+      </div>
+    );
+  }
+
+  if (productsError) {
+    return (
+      <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+        <strong className="font-bold">Error!</strong>
+        <span className="block sm:inline"> {productsError.data?.message || 'Failed to load products.'}</span>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -96,11 +127,17 @@ function Products() {
           onClick={() => {
             setEditingProduct(null);
             setFormData({
-              category: '',
-              name: '',
-              price: 0,
-              image: null,
-              description: ''
+              name: { ru: '', kz: '' },
+              price: { ru: 0, kz: 0 },
+              description: { ru: '', kz: '' },
+              material: { ru: '', kz: '' },
+              code: { ru: '', kz: '' },
+              title: { ru: '', kz: '' },
+              size: { X: 0, Y: 0, Z: 0 },
+              discountPercent: { ru: 0, kz: 0 },
+              discountPrice: { ru: 0, kz: 0 },
+              mainImage: null,
+              additionalImages: []
             });
             setIsModalOpen(true);
           }}
@@ -120,20 +157,27 @@ function Products() {
           products={products}
           onEdit={handleEdit}
           onDelete={handleDelete}
+          onView={handleView}
         />
       </motion.div>
-
+          
       <ProductModal
         isOpen={isModalOpen}
         onClose={() => {
           setIsModalOpen(false);
           setEditingProduct(null);
           setFormData({
-            category: '',
-            name: '',
-            price: 0,
-            image: null,
-            description: ''
+            name: { ru: '', kz: '' },
+            price: { ru: 0, kz: 0 },
+            description: { ru: '', kz: '' },
+            material: { ru: '', kz: '' },
+            code: { ru: '', kz: '' },
+            title: { ru: '', kz: '' },
+            size: { X: 0, Y: 0, Z: 0 },
+            discountPercent: { ru: 0, kz: 0 },
+            discountPrice: { ru: 0, kz: 0 },
+            mainImage: null,
+            additionalImages: []
           });
         }}
         formData={formData}
@@ -141,6 +185,15 @@ function Products() {
         onSubmit={handleSubmit}
         isLoading={isLoading}
         isEditing={!!editingProduct}
+      />
+
+      <ProductDetail
+        isOpen={isDetailOpen}
+        onClose={() => {
+          setIsDetailOpen(false);
+          setViewingProduct(null);
+        }}
+        product={viewingProduct}
       />
     </div>
   );

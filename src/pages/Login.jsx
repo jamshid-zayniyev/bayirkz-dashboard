@@ -1,33 +1,45 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTheme } from '../context/ThemeContext';
 import { useTranslation } from 'react-i18next';
-import { setToken } from '../utils/auth';
+import { useLoginMutation } from '../api/authApi';
+import { useDispatch } from 'react-redux';
+import { setCredentials } from '../store/slices/authSlice';
+import { getUserFromToken } from '../api/authApi';
 import LanguageSelector from '../components/language/LanguageSelector';
 
 function Login({ setIsAuthenticated }) {
-  const [credentials, setCredentials] = useState({ email: '', password: '' });
+  const [credentials, setCredential] = useState({ username: '', password: '' });
+  const [loginError, setLoginError] = useState(null);
   const { darkMode } = useTheme();
   const { t } = useTranslation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
+  // RTK Query hook for login
+  const [login, { isLoading, error }] = useLoginMutation();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // In a real app, you would validate credentials with an API
-    if (credentials.email === 'admin@example.com' && credentials.password === 'admin123') {
-      // Create a dummy token that expires in 1 hour
-      const expirationTime = Math.floor(Date.now() / 1000) + 60 * 60;
-      const dummyToken = JSON.stringify({
-        sub: '1',
-        name: 'Admin User',
-        email: credentials.email,
-        exp: expirationTime
-      });
+    setLoginError(null);
+    
+    try {
+      // Call the login mutation
+      await login(credentials).unwrap();
       
-      // Base64 encode the token to simulate a JWT
-      const encodedToken = btoa(dummyToken);
-      
-      setToken(encodedToken);
-      setIsAuthenticated(true);
+      // Get user info from token and update Redux state
+      const user = getUserFromToken();
+      if (user) {
+        dispatch(setCredentials(user));
+        setIsAuthenticated(true);
+        navigate('/');
+      } else {
+        setLoginError('Invalid login credentials. Please try again.');
+      }
+    } catch (err) {
+      console.error('Login failed:', err);
+      setLoginError('Login failed. Please check your credentials or try again later.');
     }
   };
 
@@ -51,18 +63,26 @@ function Login({ setIsAuthenticated }) {
           </p>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          {(error || loginError) && (
+            <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+              <span className="block sm:inline">
+                {loginError || error?.data?.message || 'Login failed. Please check your credentials.'}
+              </span>
+            </div>
+          )}
+          
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <label htmlFor="email" className="sr-only">{t('auth.email')}</label>
+              <label htmlFor="username" className="sr-only">{t('admins.username')}</label>
               <input
-                id="email"
-                name="email"
-                type="email"
+                id="username"
+                name="username"
+                type="text"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-t-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm dark:bg-gray-700"
-                placeholder={t('auth.email')}
-                value={credentials.email}
-                onChange={(e) => setCredentials({ ...credentials, email: e.target.value })}
+                placeholder={t('admins.username')}
+                value={credentials.username}
+                onChange={(e) => setCredential({ ...credentials, username: e.target.value })}
               />
             </div>
             <div>
@@ -75,7 +95,7 @@ function Login({ setIsAuthenticated }) {
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white rounded-b-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm dark:bg-gray-700"
                 placeholder={t('auth.password')}
                 value={credentials.password}
-                onChange={(e) => setCredentials({ ...credentials, password: e.target.value })}
+                onChange={(e) => setCredential({ ...credentials, password: e.target.value })}
               />
             </div>
           </div>
@@ -83,9 +103,20 @@ function Login({ setIsAuthenticated }) {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+              disabled={isLoading}
+              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {t('auth.login')}
+              {isLoading ? (
+                <span className="flex items-center">
+                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  {t('common.loading')}
+                </span>
+              ) : (
+                t('auth.login')
+              )}
             </button>
           </div>
         </form>

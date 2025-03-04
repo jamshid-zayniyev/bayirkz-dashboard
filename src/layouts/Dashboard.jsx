@@ -5,6 +5,9 @@ import { HiHome, HiShoppingBag, HiUsers, HiMenu, HiX, HiMoon, HiSun, HiLogout } 
 import { Menu, Transition } from '@headlessui/react';
 import { useTheme } from '../context/ThemeContext';
 import { useTranslation } from 'react-i18next';
+import { useDispatch, useSelector } from 'react-redux';
+import { clearCredentials, selectCurrentUser } from '../store/slices/authSlice';
+import { useLogoutMutation } from '../api/authApi';
 import LanguageSelector from '../components/language/LanguageSelector';
 import { removeToken } from '../utils/auth';
 
@@ -13,11 +16,27 @@ function Dashboard({ setIsAuthenticated }) {
   const { darkMode, toggleDarkMode } = useTheme();
   const navigate = useNavigate();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const currentUser = useSelector(selectCurrentUser);
 
-  const handleLogout = () => {
-    removeToken();
-    setIsAuthenticated(false);
-    navigate('/login');
+  
+  
+  // RTK Query hook for logout
+  const [logout, { isLoading: isLoggingOut }] = useLogoutMutation();
+
+  const handleLogout = async () => {
+    try {
+      // Call the logout mutation
+      await logout().unwrap();
+    } catch (error) {
+      console.error('Logout failed:', error);
+    } finally {
+      // Clear credentials and token regardless of API response
+      removeToken();
+      dispatch(clearCredentials());
+      setIsAuthenticated(false);
+      navigate('/login');
+    }
   };
 
   const navItems = [
@@ -91,7 +110,7 @@ function Dashboard({ setIsAuthenticated }) {
                 <Menu as="div" className="relative">
                   <Menu.Button className="flex items-center">
                     <div className="w-10 h-10 rounded-full bg-primary-500 flex items-center justify-center text-white font-semibold cursor-pointer hover:bg-primary-600 transition-colors duration-200">
-                      JZ
+                      {currentUser?.username?.substring(0, 2).toUpperCase() || 'AU'}
                     </div>
                   </Menu.Button>
                   
@@ -106,18 +125,26 @@ function Dashboard({ setIsAuthenticated }) {
                     <Menu.Items className="absolute right-0 mt-2 w-48 origin-top-right bg-white dark:bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <div className="py-1">
                         <div className="px-4 py-2 text-sm text-gray-700 dark:text-gray-200 border-b border-gray-200 dark:border-gray-700">
-                          <p className="font-medium">Jamshid Zayniyev</p>
-                          <p className="text-gray-500 dark:text-gray-400 text-xs">admin@example.com</p>
+                          <p className="font-medium">{currentUser?.username || 'Admin User'}</p>
+                          <p className="text-gray-500 dark:text-gray-400 text-xs">{currentUser?.email || 'admin@example.com'}</p>
                         </div>
                         <Menu.Item>
                           {({ active }) => (
                             <button
                               onClick={handleLogout}
+                              disabled={isLoggingOut}
                               className={`${
                                 active ? 'bg-gray-100 dark:bg-gray-700' : ''
-                              } group flex items-center w-full px-4 py-2 text-sm text-red-600 dark:text-red-400`}
+                              } group flex items-center w-full px-4 py-2 text-sm text-red-600 dark:text-red-400 disabled:opacity-50`}
                             >
-                              <HiLogout className="w-5 h-5 mr-3" />
+                              {isLoggingOut ? (
+                                <svg className="animate-spin h-5 w-5 mr-3 text-red-600 dark:text-red-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                              ) : (
+                                <HiLogout className="w-5 h-5 mr-3" />
+                              )}
                               {t('dashboard.logout')}
                             </button>
                           )}

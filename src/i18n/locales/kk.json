@@ -5,18 +5,19 @@
     "edit": "Өңдеу",
     "delete": "Жою",
     "loading": "Өңделуде...",
-    "confirmDelete": "Сіз шынымен жойғыңыз келе ме?"
+    "confirmDelete": "Сіз шынымен жойғыңыз келе ме?",
+    "close": "Жабу"
   },
   "auth": {
     "login": "Кіру",
-    "loginTitle": "Байыр Әкімші панелі",
+    "loginTitle": "Әкімші панелі",
     "loginSubtitle": "Аккаунтыңызға кіріңіз",
     "email": "Электрондық пошта",
     "password": "Құпия сөз"
   },
   "dashboard": {
-    "title": "Байыр Әкімші панелі",
-    "welcome": "Байыр Әкімші панеліне қош келдіңіз",
+    "title": "Әкімші панелі",
+    "welcome": "Әкімші панеліне қош келдіңіз",
     "welcomeSubtitle": "Бұл сіздің қолданбаңызды басқаруға арналған орталық хаб. Әртүрлі бөлімдерге кіру үшін навигация мәзірін пайдаланыңыз.",
     "home": "Басты бет",
     "products": "Тауарлар",
@@ -42,11 +43,52 @@
     "enterName": "Тауар атауын енгізіңіз",
     "enterDescription": "Тауар сипаттамасын енгізіңіз",
     "confirmDelete": "Сіз шынымен осы тауарды жойғыңыз келе ме?",
+    "material": "Материал",
+    "code": "Тауар коды",
+    "title": "Тақырып",
+    "size": "Өлшемі (см)",
+    "discountPercent": "Жеңілдік (%)",
+    "discountPrice": "Жеңілдікпен баға",
+    "mainImage": "Негізгі сурет",
+    "additionalImages": "Қосымша суреттер",
+    "enterCode": "Тауар кодын енгізіңіз",
+    "unifiedFields" : "Бірыңғай өнім өрістері.",
     "categories": {
-      "electronics": "Электроника",
-      "clothing": "Киім",
-      "books": "Кітаптар",
-      "home": "Үй және бақша"
+      "modern": "Қазіргі заманғы",
+      "classical": "Классикалық",
+      "no-type": "Түрі жоқ"
+    },
+    "materials": {
+      "mdf": "МДФ",
+      "ldsp": "ЛДСП",
+      "solid": "Солид",
+      "noType": "Тип жоқ"
+    },
+    "names": {
+      "executive_desks": "Басшыларға арналған үстелдер",
+      "executive_desks_open_varnish": "Басшыларға арналған үстелдер | Open Varnish",
+      "staff_desks": "Қызметкерлерге арналған үстелдер",
+      "meeting_tables": "Келіссөз үстелдері",
+      "open_space_tables": "Open Space үстелдері",
+      "coffee_tables": "Журнальдық үстелдер",
+      "coffee_tables_open_varnish": "Журнальдық үстелдер | Open Varnish",
+      "reception_desks": "Reception үстелдері",
+      "modular_furniture": "Модульді жиһаз",
+      "modular_furniture_open_varnish": "Модульді жиһаз | Open Varnish",
+      "modular_furniture_open_space": "Модульді жиһаз | Open Space үстелдері",
+      "soft_furniture": "Жұмсақ жиһаз",
+      "wardrobes": "Шкафтар",
+      "wardrobes_open_varnish": "Шкафтар | Open Varnish",
+      "dressers": "Комодтар",
+      "dressers_open_varnish": "Комодтар | Open Varnish",
+      "armchairs": "Креслолар",
+      "attachment": "Қосымша",
+      "set": "Жиынтық"
+    },
+    "titles": {
+      "modern": "Қазіргі заманғы",
+      "classical": "Классикалық",
+      "no-type": "Түрі жоқ"
     }
   },
   "admins": {

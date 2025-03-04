@@ -5,18 +5,19 @@
     "edit": "Edit",
     "delete": "Delete",
     "loading": "Processing...",
-    "confirmDelete": "Are you sure you want to delete this?"
+    "confirmDelete": "Are you sure you want to delete this?",
+    "close": "Close"
   },
   "auth": {
     "login": "Sign in",
-    "loginTitle": "Bayir Admin Dashboard",
+    "loginTitle": "Admin Dashboard",
     "loginSubtitle": "Sign in to your account",
     "email": "Email address",
     "password": "Password"
   },
   "dashboard": {
-    "title": "Bayir Admin Panel",
-    "welcome": "Welcome to the Bayir Admin Dashboard",
+    "title": "Admin Panel",
+    "welcome": "Welcome to the Admin Dashboard",
     "welcomeSubtitle": "This is your central hub for managing your application. Use the navigation menu to access different sections.",
     "home": "Home",
     "products": "Products",
@@ -42,11 +43,52 @@
     "enterName": "Enter product name",
     "enterDescription": "Enter product description",
     "confirmDelete": "Are you sure you want to delete this product?",
+    "material": "Material",
+    "code": "Product Code",
+    "title": "Title",
+    "size": "Size (cm)",
+    "discountPercent": "Discount (%)",
+    "discountPrice": "Discounted Price",
+    "mainImage": "Main Image",
+    "additionalImages": "Additional Images",
+    "enterCode": "Enter product code",
+    "unifiedFields" : "Unified product fields.",
     "categories": {
-      "electronics": "Electronics",
-      "clothing": "Clothing",
-      "books": "Books",
-      "home": "Home & Garden"
+      "modern": "Modern",
+      "classical": "Classical",
+      "no-type": "No type"
+    },
+    "materials": {
+      "mdf": "MDF",
+      "ldsp": "LDSP",
+      "solid": "Solid",
+      "noType": "No Type"
+    },
+    "names": {
+      "executive_desks": "Executive Desks",
+      "executive_desks_open_varnish": "Executive Desks | Open Varnish",
+      "staff_desks": "Staff Desks",
+      "meeting_tables": "Meeting Tables",
+      "open_space_tables": "Open Space Tables",
+      "coffee_tables": "Coffee Tables",
+      "coffee_tables_open_varnish": "Coffee Tables | Open Varnish",
+      "reception_desks": "Reception Desks",
+      "modular_furniture": "Modular Furniture",
+      "modular_furniture_open_varnish": "Modular Furniture | Open Varnish",
+      "modular_furniture_open_space": "Modular Furniture | Open Space Tables",
+      "soft_furniture": "Soft Furniture",
+      "wardrobes": "Wardrobes",
+      "wardrobes_open_varnish": "Wardrobes | Open Varnish",
+      "dressers": "Dressers",
+      "dressers_open_varnish": "Dressers | Open Varnish",
+      "armchairs": "Armchairs",
+      "attachment": "Attachment",
+      "set": "Set"
+    },
+    "titles": {
+      "modern": "Modern",
+      "classical": "Classical",
+      "no-type": "No type"
     }
   },
   "admins": {

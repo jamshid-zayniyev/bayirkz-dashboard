@@ -4,11 +4,16 @@ import { HiPlus } from 'react-icons/hi';
 import AdminModal from '../components/admins/AdminModal';
 import AdminTable from '../components/admins/AdminTable';
 import { useTranslation } from 'react-i18next';
+import { 
+  useGetAdminsQuery, 
+  useAddAdminMutation, 
+  useUpdateAdminMutation, 
+  useDeleteAdminMutation 
+} from '../api/adminsApi';
 
 function Admins() {
   const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const [editingAdmin, setEditingAdmin] = useState(null);
   const [formData, setFormData] = useState({
     username: '',
@@ -16,13 +21,13 @@ function Admins() {
     image: null
   });
 
-  // Sample data - replace with actual data from your backend
-  const [admins, setAdmins] = useState([
-    {
-      username: 'admin',
-      image: 'https://via.placeholder.com/150'
-    }
-  ]);
+  // RTK Query hooks
+  const { data: admins = [], isLoading: isLoadingAdmins, error: adminsError } = useGetAdminsQuery();
+  const [addAdmin, { isLoading: isAddingAdmin }] = useAddAdminMutation();
+  const [updateAdmin, { isLoading: isUpdatingAdmin }] = useUpdateAdminMutation();
+  const [deleteAdmin, { isLoading: isDeletingAdmin }] = useDeleteAdminMutation();
+
+  const isLoading = isAddingAdmin || isUpdatingAdmin;
 
   const handleEdit = (admin) => {
     setEditingAdmin(admin);
@@ -32,34 +37,25 @@ function Admins() {
 
   const handleDelete = async (admin) => {
     if (window.confirm(t('admins.confirmDelete'))) {
-      setAdmins(admins.filter(a => a !== admin));
+      try {
+        await deleteAdmin(admin.id).unwrap();
+      } catch (error) {
+        console.error('Failed to delete admin:', error);
+      }
     }
   };
 
   const handleSubmit = async () => {
-    setIsLoading(true);
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      const imageUrl = formData.image instanceof File 
-        ? URL.createObjectURL(formData.image) 
-        : formData.image || 'https://via.placeholder.com/150';
-      
       if (editingAdmin) {
         // Update existing admin
-        setAdmins(admins.map(a => 
-          a === editingAdmin ? { ...formData, image: imageUrl } : a
-        ));
+        await updateAdmin({ 
+          id: editingAdmin.id, 
+          ...formData 
+        }).unwrap();
       } else {
         // Add new admin
-        setAdmins([
-          ...admins,
-          {
-            username: formData.username,
-            image: imageUrl
-          }
-        ]);
+        await addAdmin(formData).unwrap();
       }
 
       // Close modal and reset form
@@ -72,10 +68,25 @@ function Admins() {
       });
     } catch (error) {
       console.error('Error saving admin:', error);
-    } finally {
-      setIsLoading(false);
     }
   };
+
+  if (isLoadingAdmins) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-500"></div>
+      </div>
+    );
+  }
+
+  if (adminsError) {
+    return (
+      <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+        <strong className="font-bold">Error!</strong>
+        <span className="block sm:inline"> {adminsError.data?.message || 'Failed to load admins.'}</span>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
