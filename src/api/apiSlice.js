@@ -3,7 +3,7 @@ import { getToken } from '../utils/auth';
 import { mockApiMiddleware } from './mockApi';
 
 // Define the base URL for the API
-const baseUrl = import.meta.env.VITE_API_URL || 'http://backend.bayir.kz/api';
+const baseUrl = import.meta.env.VITE_API_URL || 'http://bayir-backend-kz.bayir.kz/api';
 
 // Create a custom base query that uses mock data in development
 const customBaseQuery = async (args, api, extraOptions) => {
