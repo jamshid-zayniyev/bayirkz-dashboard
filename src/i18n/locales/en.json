@@ -103,6 +103,9 @@
     "confirmDelete": "Are you sure you want to delete this admin?"
   },
   "forms": {
-    "uploadImage": "Click to upload image"
+    "uploadImage": "Click to upload image",
+    "X":"Width см",
+    "Y":"Length см",
+    "Z":"Height см"
   }
 }

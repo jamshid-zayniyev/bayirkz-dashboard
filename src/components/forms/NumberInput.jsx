@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 
-function NumberInput({ label, value, onChange, min = 0 }) {
+function NumberInput({ label, value, onChange, min = 0, placeholder='0' }) {
   const handleChange = (e) => {
     const newValue = Math.max(min, parseInt(e.target.value) || min);
     onChange(newValue);
@@ -17,6 +17,7 @@ function NumberInput({ label, value, onChange, min = 0 }) {
       </label>
       <input
         type="number"
+        placeholder={placeholder}
         value={value}
         onChange={handleChange}
         min={min}

@@ -216,15 +216,17 @@ function ProductModal({ isOpen, onClose, formData, setFormData, onSubmit, isLoad
                           onChange={(e) => handleUnifiedFieldChange('material', e.target.value)}
                         />
                       </div>
-                    </div>
-                    
+                      <div className='mb-4'>
                     {/* Language-specific fields */}
                     <TextInput
                       label={t('products.code')}
-                      value={formData.code?.[activeTab] || ''}
-                      onChange={(e) => handleMultilingualChange('code', e.target.value, activeTab)}
+                      value={formData.code?.ru || ''}
+                      onChange={(e) => handleUnifiedFieldChange('code', e.target.value)}
                       placeholder={t('products.enterCode')}
                     />
+                      </div>
+                    </div>
+                    
                   </div>
                   
                   <div className="space-y-4">
@@ -267,18 +269,18 @@ function ProductModal({ isOpen, onClose, formData, setFormData, onSubmit, isLoad
                   </h3>
                   <div className="grid grid-cols-3 gap-4">
                     <NumberInput
-                      label="X"
-                      value={formData.size?.X || 0}
+                      label={t('forms.X')}
+                      value={formData.size?.X || null}
                       onChange={(value) => handleSizeChange('X', value)}
                     />
                     <NumberInput
-                      label="Y"
-                      value={formData.size?.Y || 0}
+                      label={t('forms.Y')}
+                      value={formData.size?.Y || null}
                       onChange={(value) => handleSizeChange('Y', value)}
                     />
                     <NumberInput
-                      label="Z"
-                      value={formData.size?.Z || 0}
+                      label={t('forms.Z')}
+                      value={formData.size?.Z || null}
                       onChange={(value) => handleSizeChange('Z', value)}
                     />
                   </div>
